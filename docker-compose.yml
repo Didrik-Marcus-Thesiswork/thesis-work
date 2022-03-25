@@ -1,0 +1,12 @@
+version: '3.6'
+
+services:
+  ms-db:
+    build: ./mysql
+    platform: linux/amd64
+    ports: 
+      - 3306:3306
+    environment: 
+      MYSQL_DATABASE: ms-db
+      MYSQL_ROOT_PASSWORD: root
+    
