@@ -1,6 +1,12 @@
 version: '3.6'
 
 services:
+  web-application:
+    build: ./application
+    ports:
+      - 4000:4000
+    volumes: 
+      - ./application/src:/application/src
   ms-db:
     build: ./mysql
     platform: linux/amd64
