@@ -15,4 +15,14 @@ services:
     environment: 
       MYSQL_DATABASE: ms-db
       MYSQL_ROOT_PASSWORD: root
+  mongo-db:
+    build: ./mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=mongodb         # name
+      - MONGO_INITDB_ROOT_USERNAME=root       # username 
+      - MONGO_INITDB_ROOT_PASSWORD=root       # password
+    volumes:
+      - ./mongo-volume:/data/db
+    ports:
+      - '27017:27017'
     
