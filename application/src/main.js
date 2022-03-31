@@ -3,6 +3,12 @@
 var express = require('express');
 var { graphqlHTTP } = require('express-graphql');
 var { buildSchema } = require('graphql');
+var {MongoClient, ObjectId} = require('mongodb')
+
+const homePath = '/graphql'
+const URL = 'http://localhost'
+const PORT = 4000
+const MONGO_URL = 'mongodb://localhost:27017'
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
