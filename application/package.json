@@ -3,6 +3,7 @@
   "scripts": {
     "start": "nodemon --inspect=0.0.0.0 src/main.js -L"
   },
+  "type" : "module",
   "dependencies": {
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
