@@ -8,9 +8,14 @@ var schema = buildSchema(`
 `);
 
 var bookSchema = buildSchema(`
-  type Query {
+  type Book {
+    id: ID!
     title: String
     author: String
+  }
+  type Query {
+    getBooks: [Book],
+    getBookInfo(id: Int): Book
   }
 `);
 
