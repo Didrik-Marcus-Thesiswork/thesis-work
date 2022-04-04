@@ -1,7 +1,7 @@
 // https://graphql.org/graphql-js/running-an-express-graphql-server/
 
 import { schema, bookSchema } from './schema.js'
-import { root, rootBooks } from './root-values.js'
+import { root, rootMysql, rootMongo } from './root-values.js'
 import express  from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import {MongoClient, ObjectId} from 'mongodb';
@@ -56,7 +56,7 @@ app.use('/graphql', graphqlHTTP({
 
 app.use('/books', graphqlHTTP ({
   schema: bookSchema,
-  rootValue: rootBooks,
+  rootValue: rootMysql.books,
   graphiql: true
 }))
 

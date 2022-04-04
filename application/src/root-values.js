@@ -10,15 +10,30 @@ var root = {
         return 'Hello world!';
     },
 };
-var rootBooks = {
-    title: () => {
-        return 'Unknown';
-    },
-    author: () => {
-        return 'Unknown';
-    },
-    getBooks: (args, req) => queryDB(req, "select * from books").then(data => data),
-    getBookInfo: (args, req) => queryDB(req, "select * from books where id = ?", [args.id]).then(data => data[0])
-};
 
-export { root, rootBooks }
+var rootMysql = { 
+    books: {
+        title: () => {
+            return 'Unknown';
+        },
+        author: () => {
+            return 'Unknown';
+        },
+        getBooks: (args, req) => queryDB(req, "select * from books").then(data => data),
+        getBookInfo: (args, req) => queryDB(req, "select * from books where id = ?", [args.id]).then(data => data[0])
+    }
+}
+var rootMongo = {
+    books: {
+        title: () => {
+            return 'Unknown';
+        },
+        author: () => {
+            return 'Unknown';
+        },
+        getBooks: (args, req) => "Not ready yet",
+        getBookInfo: (args, req) => "Not ready yet"
+    },
+}
+
+export { root, rootMysql, rootMongo }
