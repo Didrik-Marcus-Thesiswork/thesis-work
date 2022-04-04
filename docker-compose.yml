@@ -15,15 +15,14 @@ services:
     environment: 
       MYSQL_DATABASE: ms-db
       MYSQL_ROOT_PASSWORD: root
-  mongo-db:
-    build: ./mongodb
+  mongo:
+    image: 'mongo:latest'
     environment:
-      - MONGO_INITDB_DATABASE=mongodb         # name
-      - MONGO_INITDB_ROOT_USERNAME=root       # username 
-      - MONGO_INITDB_ROOT_PASSWORD=root       # password
+      MONGO_INITDB_DATABASE: testarn         # name
+      MONGO_INITDB_ROOT_USERNAME: root       # username 
+      MONGO_INITDB_ROOT_PASSWORD: root       # password
     volumes:
-      - ./mongodb/mongo-volume:/data/db
-      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     ports:
       - '27017:27017'
     
