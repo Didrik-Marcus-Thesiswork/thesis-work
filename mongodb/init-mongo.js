@@ -10,5 +10,4 @@ db.createUser(
     ]
   }
 )
-printjson(db.insert({title: "Foo", category: "Bar"}))
 
