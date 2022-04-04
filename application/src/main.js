@@ -11,12 +11,24 @@ import mysql from 'mysql'
 const homePath = '/graphql'
 const URL = 'http://localhost'
 const PORT = 4000
-const MONGO_URL = 'mongodb://localhost:27017'
+const MONGO_URL = 'mongodb://root:root@mongo:27017/admin'
 
 // The root provides a resolver function for each API endpoint
 
 
 var app = express();
+
+function main(){
+  MongoClient.connect(MONGO_URL, function(err, db) {
+    if(err){
+      console.log("Error occured")
+      throw err;
+    }else{
+      console.log("Connection to Mongo DB established")
+    }
+    db.close()
+  });
+}
 
 
 app.use((req, res, next) => {
@@ -48,5 +60,8 @@ app.use('/books', graphqlHTTP ({
   graphiql: true
 }))
 
+main();
+
 app.listen(4000);
+
 console.log('Running a GraphQL API server at http://localhost:4000/graphql');
