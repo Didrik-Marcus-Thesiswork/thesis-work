@@ -1,5 +1,7 @@
-const queryDB = (req, sql, args) => new Promise((resolve, reject) => {
-    req.mysqlDb.query(sql, args, (err, rows) => {
+import { dbMysql, dbMongo } from './db.js';
+
+const queryDB = (sql, args) => new Promise((resolve, reject) => {
+    dbMysql.query(sql, args, (err, rows) => {
         if (err) return reject(err);
         rows.changedRows || rows.affectedRows || rows.insertId ? resolve(true) : resolve(rows);
     });
@@ -19,8 +21,8 @@ var rootMysql = {
         author: () => {
             return 'Unknown';
         },
-        getBooks: (args, req) => queryDB(req, "select * from books").then(data => data),
-        getBookInfo: (args, req) => queryDB(req, "select * from books where id = ?", [args.id]).then(data => data[0])
+        getBooks: (args, req) => queryDB("select * from books", null).then(data => data),
+        getBookInfo: (args, req) => queryDB("select * from books where id = ?", [args.id]).then(data => data[0])
     }
 }
 var rootMongo = {
