@@ -27,8 +27,14 @@ var rootMysql = {
 }
 var rootMongo = {
     books: {
-        title: () => {
-            return 'Unknown';
+        title: () => {},
+        getBooks: () => {
+            dbMongo.collection("books").find({}, function(err, docs){
+                docs.each(function(err, docs){
+                    if(docs) console.log(docs);
+                    return docs
+                })
+            })
         },
         author: () => {
             return 'Unknown';

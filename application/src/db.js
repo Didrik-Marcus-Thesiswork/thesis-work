@@ -4,11 +4,13 @@ import mysql from 'mysql'
 // MongoDB Connection
 const MONGO_URL = 'mongodb://root:root@mongo:27017/admin'
 
-var dbMongo = MongoClient.connect(MONGO_URL, function(err, db) {
+var dbMongo
+MongoClient.connect(MONGO_URL, function(err, db) {
     if(err){
         console.log("Error occured")
         throw err;
     }else{
+        dbMongo = db
         console.log("Connection to Mongo DB established")
     }
 });

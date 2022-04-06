@@ -19,7 +19,7 @@ app.use('/graphql', graphqlHTTP({
 
 app.use('/books', graphqlHTTP ({
   schema: bookSchema,
-  rootValue: rootMysql.books,
+  rootValue: rootMongo.books,
   graphiql: true
 }))
 
