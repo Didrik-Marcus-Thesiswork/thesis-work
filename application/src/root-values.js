@@ -29,18 +29,11 @@ var rootMongo = {
     books: {
         title: () => {},
         getBooks: () => {
-            dbMongo.collection("books").find({}, function(err, docs){
-                docs.each(function(err, docs){
-                    if(docs) console.log(docs);
-                    else console.log("no docs found")
-                    return [docs]
-                })
-            })
+            return dbMongo.collection("books").find().toArray()
         },
         author: () => {
             return 'Unknown';
         },
-        getBooks: (args, req) => "Not ready yet",
         getBookInfo: (args, req) => "Not ready yet"
     },
     foo: {
