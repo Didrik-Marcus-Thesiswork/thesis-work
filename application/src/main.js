@@ -1,6 +1,6 @@
 // https://graphql.org/graphql-js/running-an-express-graphql-server/
 
-import { schema, bookSchema } from './schema.js'
+import { schema, bookSchema, fooSchema } from './schema.js'
 import { root, rootMysql, rootMongo } from './root-values.js'
 import express  from 'express';
 import { graphqlHTTP } from 'express-graphql';
@@ -20,6 +20,12 @@ app.use('/graphql', graphqlHTTP({
 app.use('/books', graphqlHTTP ({
   schema: bookSchema,
   rootValue: rootMongo.books,
+  graphiql: true
+}))
+
+app.use('/foo', graphqlHTTP ({
+  schema: fooSchema,
+  rootValue: rootMongo.foo,
   graphiql: true
 }))
 

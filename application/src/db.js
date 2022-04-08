@@ -2,10 +2,21 @@ import {MongoClient, ObjectId} from 'mongodb';
 import mysql from 'mysql'
 
 // MongoDB Connection
-const MONGO_URL = 'mongodb://root:root@mongo:27017/admin'
+const mongo_url = 'mongodb://root:root@mongo:27017/admin'
+const client = new MongoClient(mongo_url)
+const dbName = 'test'
 
-var dbMongo
-MongoClient.connect(MONGO_URL, function(err, db) {
+await client.connect()
+console.log("connection to MongoDB established")
+const dbMongo = client.db(dbName)
+const collection = dbMongo.collection("foo")
+const foo = await collection.find({}).toArray()
+console.log(foo)
+
+
+
+/*
+MongoClient.connect(mongo_url, function(err, db) {
     if(err){
         console.log("Error occured")
         throw err;
@@ -14,6 +25,7 @@ MongoClient.connect(MONGO_URL, function(err, db) {
         console.log("Connection to Mongo DB established")
     }
 });
+*/
 
 
 // MySQL Connection

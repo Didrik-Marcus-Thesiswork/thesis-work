@@ -1,1 +1,7 @@
-{ "title": "Foo", "category": "Bar", "authors": [{ "name": "Bob", "age": "42" }]}
+{ 
+    "title": "Foo", 
+    "category": "Bar", 
+    "authors": [{ 
+        "name": "Bob", 
+        "age": "42" }]
+    }

@@ -32,7 +32,8 @@ var rootMongo = {
             dbMongo.collection("books").find({}, function(err, docs){
                 docs.each(function(err, docs){
                     if(docs) console.log(docs);
-                    return docs
+                    else console.log("no docs found")
+                    return [docs]
                 })
             })
         },
@@ -42,6 +43,20 @@ var rootMongo = {
         getBooks: (args, req) => "Not ready yet",
         getBookInfo: (args, req) => "Not ready yet"
     },
+    foo: {
+        foo: () => {
+            return "test"
+        } ,
+        getFoos: () => {
+            return dbMongo.collection("foo").find().toArray()
+            /*
+            return [{
+                "foo": "foo",
+                "bar": "bar"
+            }]
+            */
+        }
+    }
 }
 
 export { root, rootMysql, rootMongo }

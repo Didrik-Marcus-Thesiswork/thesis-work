@@ -9,14 +9,27 @@ var schema = buildSchema(`
 
 var bookSchema = buildSchema(`
   type Book {
-    id: ID!
+    id: ID 
     title: String
-    author: String
+    authors: [Author]
+  }
+  type Author {
+    name: String
+    age: Int
   }
   type Query {
     getBooks: [Book],
     getBookInfo(id: Int): Book
   }
 `);
+var fooSchema = buildSchema(`
+  type Foo {
+    foo: String,
+    bar: String
+  }
+  type Query {
+    getFoos: [Foo]
+  }
+`)
 
-export { schema, bookSchema }
+export { schema, bookSchema, fooSchema }
