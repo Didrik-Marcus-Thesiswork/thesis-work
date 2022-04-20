@@ -1,0 +1,16 @@
+- name: database-comparison
+  warmup_duration: 60
+  duration: 100
+  candidates:
+  - name: mysql
+    url: http://172.17.0.1:5000/graphql/mysql
+    query: getFoos
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://172.17.0.1:5000/graphql/mongodb
+    query: getFoos
+    queries_file: queries.graphql
+  rps:
+  - 100
+  - 200
+  - 300
