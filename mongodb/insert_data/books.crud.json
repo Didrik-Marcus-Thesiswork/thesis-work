@@ -1,13 +1,13 @@
 [{ 
-    "libarary_id" : 1,
+    "library_id" : 1,
     "title": "FooFoo", 
     "release_year": 1991
 }, { 
-    "libarary_id" : 2,
+    "library_id" : 2,
     "title": "FooFoo2", 
     "release_year": 1992
 }, { 
-    "libarary_id" : 3,
+    "library_id" : 3,
     "title": "FooFoo3", 
     "release_year": 1993
 }]
