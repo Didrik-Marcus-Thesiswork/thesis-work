@@ -64,6 +64,22 @@ var rootMongo = {
             }
 
             return libraries
+        },
+        getLibrariesWithBooksAndLibrarians: async () => {
+             //Fetch libraries
+             var libraries = await dbMongo.collection("libraries").find().toArray()
+
+             //Fetch all books per library
+             for(let i = 0; i < libraries.length ; i ++ ){
+                 libraries[i].books = await dbMongo.collection("books").find({library_id : libraries[i].id}).toArray()
+             }
+
+             //Fetch all librarians per library
+             for(let i = 0; i < libraries.length; i++){
+                 libraries[i].librarians = await dbMongo.collection("librarians").find({library_id: libraries[i].id}).toArray()
+             }
+ 
+             return libraries
         }
     }
 }
