@@ -1,0 +1,13 @@
+[{ 
+    "id": 1,
+    "name": "Foo", 
+    "street": "Bar street"
+}, {
+    "id": 2,
+    "name": "Foo2", 
+    "street": "Bar street3"
+}, {
+    "id": 3,
+    "name": "Foo3", 
+    "street": "Bar street3"
+}]

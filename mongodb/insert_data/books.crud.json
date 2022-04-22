@@ -1,31 +1,13 @@
 [{ 
-    "title": "Foo", 
-    "category": "Bar", 
-    "authors": [{ 
-        "name": "Bob", 
-        "age": "42" }]
+    "libarary_id" : 1,
+    "title": "FooFoo", 
+    "release_year": 1991
 }, { 
-    "title": "Foo", 
-    "category": "Bar", 
-    "authors": [{ 
-        "name": "Bob", 
-        "age": "42" }]
+    "libarary_id" : 2,
+    "title": "FooFoo2", 
+    "release_year": 1992
 }, { 
-    "title": "Foo", 
-    "category": "Bar", 
-    "authors": [{ 
-        "name": "Bob", 
-        "age": "42" }]
-}, { 
-    "title": "Foo", 
-    "category": "Bar", 
-    "authors": [{ 
-        "name": "Bob", 
-        "age": "42" }]
-}, { 
-    "title": "Foo", 
-    "category": "Bar", 
-    "authors": [{ 
-        "name": "Bob", 
-        "age": "42" }]
+    "libarary_id" : 3,
+    "title": "FooFoo3", 
+    "release_year": 1993
 }]
