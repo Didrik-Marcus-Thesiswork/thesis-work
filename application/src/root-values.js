@@ -55,15 +55,17 @@ var rootMongo = {
             return dbMongo.collection("libraries").find().toArray()
         },
         getLibrariesWithBooks: () => {
-            return dbMongo.collection("libraries").find().toArray()
+            dbMongo.collection("libraries").find().toArray()
             .then(function(libraries){
-                libraries.forEach(element => {
+                libraries.forEach( (element, index, array) => {
                     console.log(`Library ID : ${element.id}`)
-                    dbMongo.collection("books").find({"library_id" :  element.id }).toArray() //Find parameters is wrong
+                    dbMongo.collection("books").find({ library_id : element.id }).toArray() //Find parameters is wrong
                     .then(function(books){
-                        console.log(books)
+                        array[index].books = books
+                        console.log(array[index])
                     })
                 })
+                console.log(libraries)
             })
         }
     }
