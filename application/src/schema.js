@@ -74,4 +74,4 @@ var librarySchema = buildSchema(`
   }
 `)
 
-export { schema, bookSchema, fooSchema }
+export { schema, bookSchema, fooSchema, librarySchema }

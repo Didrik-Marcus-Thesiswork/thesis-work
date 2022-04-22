@@ -49,6 +49,23 @@ var rootMongo = {
             }]
             */
         }
+    },
+    libraries: {
+        getLibraries: () => {
+            return dbMongo.collection("libraries").find().toArray()
+        },
+        getLibrariesWithBooks: () => {
+            return dbMongo.collection("libraries").find().toArray()
+            .then(function(libraries){
+                libraries.forEach(element => {
+                    console.log(`Library ID : ${element.id}`)
+                    dbMongo.collection("books").find({"library_id" :  element.id }).toArray() //Find parameters is wrong
+                    .then(function(books){
+                        console.log(books)
+                    })
+                })
+            })
+        }
     }
 }
 
