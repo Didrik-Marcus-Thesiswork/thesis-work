@@ -49,4 +49,29 @@ var fooSchema = buildSchema(`
   }
 `)
 
+var librarySchema = buildSchema(`
+  type Library {
+    id : ID,
+    name : String,
+    street : String,
+    books: [Book],
+    librarians: [Librarian]
+  }
+  type Book {
+    title : String,
+    release_year : Int,
+    library_id : ID
+  }
+  type Librarian {
+    name: String,
+    age: Int,
+    library_id : ID
+  }
+  type Query {
+    getLibraries: [Library]
+    getLibrariesWithBooks: [Library]
+    getLibrariesWithBooksAndLibrarians: [Library]
+  }
+`)
+
 export { schema, bookSchema, fooSchema }
