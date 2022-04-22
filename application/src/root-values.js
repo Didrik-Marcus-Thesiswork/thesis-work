@@ -58,10 +58,7 @@ var rootMongo = {
             //Fetch libraries
             var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            //Fetch all books per library
-            for(let i = 0; i < libraries.length ; i ++ ){
-                libraries[i].books = await dbMongo.collection("books").find({library_id : libraries[i].id}).toArray()
-            }
+            await getLibrariesWithBooks(libraries)
 
             return libraries
         },
@@ -69,19 +66,32 @@ var rootMongo = {
              //Fetch libraries
              var libraries = await dbMongo.collection("libraries").find().toArray()
 
-             //Fetch all books per library
-             for(let i = 0; i < libraries.length ; i ++ ){
-                 libraries[i].books = await dbMongo.collection("books").find({library_id : libraries[i].id}).toArray()
-             }
-
-             //Fetch all librarians per library
-             for(let i = 0; i < libraries.length; i++){
-                 libraries[i].librarians = await dbMongo.collection("librarians").find({library_id: libraries[i].id}).toArray()
-             }
+             await getLibrariesWithBooksAndAutors(libraries)
  
              return libraries
         }
     }
+}
+const getLibrariesWithBooks = async (libraries) => {
+
+    //Fetch all books per library
+    for(let i = 0; i < libraries.length ; i ++ ){
+        libraries[i].books = await dbMongo.collection("books").find({library_id : libraries[i].id}).toArray()
+    }
+
+    return libraries
+}
+const getLibrariesWithBooksAndAutors = async (libraries) => {
+    
+    //Fetch all books per library
+    await getLibrariesWithBooks(libraries)
+    
+    //Fetch all librarians per library
+    for(let i = 0; i < libraries.length; i++){
+        libraries[i].librarians = await dbMongo.collection("librarians").find({library_id: libraries[i].id}).toArray()
+    }
+
+    return libraries
 }
 
 export { root, rootMysql, rootMongo }
