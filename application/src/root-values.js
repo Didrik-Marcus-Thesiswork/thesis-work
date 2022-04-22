@@ -54,19 +54,16 @@ var rootMongo = {
         getLibraries: () => {
             return dbMongo.collection("libraries").find().toArray()
         },
-        getLibrariesWithBooks: () => {
-            dbMongo.collection("libraries").find().toArray()
-            .then(function(libraries){
-                libraries.forEach( (element, index, array) => {
-                    console.log(`Library ID : ${element.id}`)
-                    dbMongo.collection("books").find({ library_id : element.id }).toArray() //Find parameters is wrong
-                    .then(function(books){
-                        array[index].books = books
-                        console.log(array[index])
-                    })
-                })
-                console.log(libraries)
-            })
+        getLibrariesWithBooks: async () => {
+            //Fetch libraries
+            var libraries = await dbMongo.collection("libraries").find().toArray()
+
+            //Fetch all books per library
+            for(let i = 0; i < libraries.length ; i ++ ){
+                libraries[i].books = await dbMongo.collection("books").find({library_id : libraries[i].id}).toArray()
+            }
+
+            return libraries
         }
     }
 }
