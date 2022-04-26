@@ -1,4 +1,4 @@
-import { buildSchema, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { buildSchema } from 'graphql';
 // Construct a schema, using GraphQL schema language
 
 /**
@@ -16,38 +16,6 @@ import { buildSchema, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'gr
     }
   }
  */
-
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-var bookSchema = buildSchema(`
-  type Book {
-    _id: ID 
-    title: String
-    category: String
-    authors: [Author]
-  }
-  type Author {
-    name: String
-    age: Int
-  }
-  type Query {
-    getBooks: [Book],
-    getBookInfo(id: Int): Book
-  }
-`);
-var fooSchema = buildSchema(`
-  type Foo {
-    foo: String,
-    bar: String
-  }
-  type Query {
-    getFoos: [Foo]
-  }
-`)
 
 var librariesSchema = buildSchema(`
   type Library {
