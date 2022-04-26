@@ -49,7 +49,7 @@ var fooSchema = buildSchema(`
   }
 `)
 
-var librarySchema = buildSchema(`
+var librariesSchema = buildSchema(`
   type Library {
     id : ID,
     name : String,
@@ -74,4 +74,4 @@ var librarySchema = buildSchema(`
   }
 `)
 
-export { schema, bookSchema, fooSchema, librarySchema }
+export { librariesSchema }

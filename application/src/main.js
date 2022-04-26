@@ -1,7 +1,8 @@
 // https://graphql.org/graphql-js/running-an-express-graphql-server/
 
-import { schema, bookSchema, fooSchema, librarySchema } from './schema.js'
-import { root, rootMysql, rootMongo } from './root-values.js'
+import { librariesSchema } from './schema.js'
+import { rootMongo } from './root/mongo-root.js'
+import { rootMysql } from './root/mysql-root.js'
 import express  from 'express';
 import { graphqlHTTP } from 'express-graphql';
 
@@ -11,26 +12,14 @@ function main(){
 
 }
 
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: root,
-  graphiql: true,
-}));
-
-app.use('/books', graphqlHTTP ({
-  schema: bookSchema,
-  rootValue: rootMongo.books,
+app.use('/libraries/mysql', graphqlHTTP ({
+  schema: librariesSchema,
+  rootValue: rootMysql.libraries,
   graphiql: true
 }))
 
-app.use('/foo', graphqlHTTP ({
-  schema: fooSchema,
-  rootValue: rootMongo.foo,
-  graphiql: true
-}))
-
-app.use('/library', graphqlHTTP ({
-  schema: librarySchema,
+app.use('/libraries/mongo', graphqlHTTP ({
+  schema: librariesSchema,
   rootValue: rootMongo.libraries,
   graphiql: true
 }))
@@ -39,4 +28,4 @@ main();
 
 app.listen(4000);
 
-console.log('Running a GraphQL API server at http://localhost:4000/graphql');
+console.log('Running a GraphQL API server at http://localhost:4000/libraries/mongo');
