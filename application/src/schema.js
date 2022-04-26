@@ -68,7 +68,7 @@ var librariesSchema = buildSchema(`
     library_id : ID
   }
   type Query {
-    getLibraries: [Library]
+    getLibraries(limit: Int): [Library]
     getLibrariesWithBooks: [Library]
     getLibrariesWithBooksAndLibrarians: [Library]
   }

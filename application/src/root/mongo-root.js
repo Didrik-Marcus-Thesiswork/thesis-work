@@ -2,10 +2,10 @@ import { dbMongo } from '../db.js';
 
 var rootMongo = {
     libraries: {
-        getLibraries: () => {
-            return dbMongo.collection("libraries").find().toArray()
+        getLibraries: (args, req) => {
+            return dbMongo.collection("libraries").find().limit(args.limit).toArray()
         },
-        getLibrariesWithBooks: async () => {
+        getLibrariesWithBooks: async (args, req) => {
             //Fetch libraries
             var libraries = await dbMongo.collection("libraries").find().toArray()
 
@@ -13,11 +13,11 @@ var rootMongo = {
 
             return libraries
         },
-        getLibrariesWithBooksAndLibrarians: async () => {
+        getLibrariesWithBooksAndLibrarians: async (args, req) => {
             //Fetch libraries
             var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            await getLibrariesWithBooksAndAuthors(libraries)
+            await getLibrariesWithBooksAndLibrarians(libraries)
  
             return libraries
         }
@@ -32,7 +32,7 @@ const getLibrariesWithBooks = async (libraries) => {
 
     return libraries
 }
-const getLibrariesWithBooksAndAuthors = async (libraries) => {
+const getLibrariesWithBooksAndLibrarians = async (libraries) => {
     
     //Fetch all books per library
     await getLibrariesWithBooks(libraries)
@@ -41,7 +41,7 @@ const getLibrariesWithBooksAndAuthors = async (libraries) => {
     for(let i = 0; i < libraries.length; i++){
         libraries[i].librarians = await dbMongo.collection("librarians").find({library_id: libraries[i].id}).toArray()
     }
-    console.log(libraries)
+
     return libraries
 }
 
