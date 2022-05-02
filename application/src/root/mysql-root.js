@@ -59,7 +59,7 @@ const getBooksByLibraryIds = async (libraryIds) => {
     return books
 }
 
-const getBooksAndLibrariansByIds = async (libraryIds) => {
+const getBooksAndLibrariansByLibraryIds = async (libraryIds) => {
     
     //Fetch all books
     const books = await getBooksByLibraryIds(libraryIds)
