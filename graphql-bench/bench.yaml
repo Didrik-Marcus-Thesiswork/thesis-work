@@ -1,13 +1,13 @@
 - name: database-comparison
-  warmup_duration: 60
-  duration: 100
+  warmup_duration: 5
+  duration: 20
   candidates:
   - name: mysql
-    url: http://172.17.0.1:5000/libraries/mysql
+    url: http://{YOUR-IP}:4000/libraries/mysql
     query: getLibraries
     queries_file: queries.graphql
   - name: mongodb
-    url: http://172.17.0.1:5000/libraries/mysql
+    url: http://{YOUR-IP}:4000/libraries/mongodb
     query: getLibraries
     queries_file: queries.graphql
   rps:
