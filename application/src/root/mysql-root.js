@@ -18,7 +18,32 @@ var rootMysql = {
             await getBooksAndLibrariansByLibraries(libraries)
  
             return libraries
-        }
+        },
+        getLibrariesWithBooksDataload: async (args, req) => {
+            var libraries = await queryDB("select * from libraries", null).then(data => data)
+            
+            //Push keys into an array
+            var keys = []
+            for(library in libraries){
+                keys.push(library.id)
+            }
+
+            const books = await getBooksByLibraryIds(keys)
+
+            return libraries
+        },
+        getLibrariesWithBooksAndLibrariansDataload: async (args, req) => {
+            var libraries = await queryDB("select * from libraries", null).then(data => data)
+
+            var keys = []
+            for(library in libraries){
+                keys.push(library.id)
+            }
+
+            const {books, librarians} = await getBooksAndLibrariansByLibraryIds(keys)
+ 
+            return libraries
+        },
     }
 }
 
@@ -67,7 +92,7 @@ const getBooksAndLibrariansByLibraryIds = async (libraryIds) => {
     //Fetch all librarians
     const librarians = await queryDB("select * from librarians where library_id = ANY(?)", libraryIds).then(data => data)
 
-    return libraries
+    return {books, librarians}
 }
 
 export { rootMysql }
