@@ -1,4 +1,0 @@
-query getFoos {
-  foo
-  bar
-}

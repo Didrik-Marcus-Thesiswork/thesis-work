@@ -1,0 +1,5 @@
+query getLibraries(limit:10) {
+    id,
+    name,
+    street
+}
