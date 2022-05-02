@@ -9,7 +9,7 @@ var rootMongo = {
             //Fetch libraries
             var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            await getLibrariesWithBooks(libraries)
+            await getBooksByLibraries(libraries)
 
             return libraries
         },
@@ -17,13 +17,13 @@ var rootMongo = {
             //Fetch libraries
             var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            await getLibrariesWithBooksAndLibrarians(libraries)
+            await getBooksAndLibrariansByLibraries(libraries)
  
             return libraries
         }
     }
 }
-const getLibrariesWithBooks = async (libraries) => {
+const getBooksByLibraries = async (libraries) => {
 
     //Fetch all books per library
     for(let i = 0; i < libraries.length ; i ++ ){
@@ -32,10 +32,10 @@ const getLibrariesWithBooks = async (libraries) => {
 
     return libraries
 }
-const getLibrariesWithBooksAndLibrarians = async (libraries) => {
+const getBooksAndLibrariansByLibraries = async (libraries) => {
     
     //Fetch all books per library
-    await getLibrariesWithBooks(libraries)
+    await getBooksByLibraries(libraries)
     
     //Fetch all librarians per library
     for(let i = 0; i < libraries.length; i++){
