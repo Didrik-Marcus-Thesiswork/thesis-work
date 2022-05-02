@@ -21,15 +21,17 @@ var rootMysql = {
         },
         getLibrariesWithBooksDataload: async (args, req) => {
             var libraries = await queryDB("select * from libraries", null).then(data => data)
-            
+            console.log(libraries)
             //Push keys into an array
             var keys = []
-            for(library in libraries){
+            for(let library of libraries){
                 keys.push(library.id)
             }
-
+            
             const books = await getBooksByLibraryIds(keys)
 
+            const groupedBooks = groupByLibraryId(books)
+            console.log(groupedBooks)
             return libraries
         },
         getLibrariesWithBooksAndLibrariansDataload: async (args, req) => {
@@ -41,7 +43,7 @@ var rootMysql = {
             }
 
             const {books, librarians} = await getBooksAndLibrariansByLibraryIds(keys)
- 
+            
             return libraries
         },
     }
@@ -79,7 +81,7 @@ const getBooksAndLibrariansByLibraries = async (libraries) => {
 
 const getBooksByLibraryIds = async (libraryIds) => {
 
-    const books = await queryDB("select * from books where library_id = ANY(?)", libraryIds).then(data => data)
+    const books = await queryDB("select * from books where library_id IN(?)", [libraryIds]).then(data => data)
 
     return books
 }
@@ -93,6 +95,10 @@ const getBooksAndLibrariansByLibraryIds = async (libraryIds) => {
     const librarians = await queryDB("select * from librarians where library_id = ANY(?)", libraryIds).then(data => data)
 
     return {books, librarians}
+}
+
+const groupByLibraryId = (objects) => {
+    //TODO
 }
 
 export { rootMysql }

@@ -39,6 +39,7 @@ var librariesSchema = buildSchema(`
     getLibraries(limit: Int): [Library]
     getLibrariesWithBooks: [Library]
     getLibrariesWithBooksAndLibrarians: [Library]
+    getLibrariesWithBooksDataload : [Library]
   }
 `)
 
