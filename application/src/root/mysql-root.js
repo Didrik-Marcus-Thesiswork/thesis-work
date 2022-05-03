@@ -1,4 +1,5 @@
 import { dbMysql} from '../db.js';
+import { groupBy, map } from 'ramda';
 
 var rootMysql = { 
     libraries: {
@@ -21,21 +22,23 @@ var rootMysql = {
         },
         getLibrariesWithBooksDataload: async (args, req) => {
             var libraries = await queryDB("select * from libraries", null).then(data => data)
-            console.log(libraries)
+            if(libraries.length <= 0) return []
+
             //Push keys into an array
             var keys = []
             for(let library of libraries){
                 keys.push(library.id)
             }
             
-            const books = await getBooksByLibraryIds(keys)
+            var books = await getBooksByLibraryIds(keys)
 
-            const groupedBooks = groupByLibraryId(books)
-            console.log(groupedBooks)
+            var groupedById = groupBy(book => book.library_id, books)
+            console.log("GroupByID: ", groupedById)
             return libraries
         },
         getLibrariesWithBooksAndLibrariansDataload: async (args, req) => {
             var libraries = await queryDB("select * from libraries", null).then(data => data)
+            if(libraries.length <= 0) return []
 
             var keys = []
             for(library in libraries){
@@ -82,7 +85,6 @@ const getBooksAndLibrariansByLibraries = async (libraries) => {
 const getBooksByLibraryIds = async (libraryIds) => {
 
     const books = await queryDB("select * from books where library_id IN(?)", [libraryIds]).then(data => data)
-
     return books
 }
 
@@ -97,8 +99,5 @@ const getBooksAndLibrariansByLibraryIds = async (libraryIds) => {
     return {books, librarians}
 }
 
-const groupByLibraryId = (objects) => {
-    //TODO
-}
 
 export { rootMysql }
