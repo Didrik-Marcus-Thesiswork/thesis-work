@@ -1,6 +1,4 @@
-import { buildSchema } from 'graphql';
-
-var librariesSchema = buildSchema(`
+const librariesSchema =`
   type Library {
     id : ID,
     name : String,
@@ -24,6 +22,6 @@ var librariesSchema = buildSchema(`
     getLibrariesWithBooksAndLibrarians: [Library]
     getLibrariesWithBooksDataload : [Library]
   }
-`)
+`
 
 export { librariesSchema }
