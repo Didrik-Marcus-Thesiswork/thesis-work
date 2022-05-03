@@ -1,56 +1,56 @@
 import { dbMysql} from '../db.js';
 import { groupBy, map } from 'ramda';
+import DataLoader from 'dataloader';
 
 var rootMysql = { 
-    libraries: {
-        getLibraries: async (args, req) => {
-            return queryDB("select * from libraries limit ?", [args.limit]).then(data => data)
-        },
-        getLibrariesWithBooks: async (args, req) => {
-            var libraries = await queryDB("select * from libraries", null).then(data => data)
+    getLibraries: async (args, req) => {
+        return queryDB("select * from libraries limit ?", [args.limit]).then(data => data)
+    },
+    getLibrariesWithBooks: async (args, req) => {
+        var libraries = await queryDB("select * from libraries", null).then(data => data)
 
-            await getBooksByLibraries(libraries)
+        await getBooksByLibraries(libraries)
 
-            return libraries
-        },
-        getLibrariesWithBooksAndLibrarians: async (args, req) => {
-            var libraries = await queryDB("select * from libraries", null).then(data => data)
+        return libraries
+    },
+    getLibrariesWithBooksAndLibrarians: async (args, req) => {
+        var libraries = await queryDB("select * from libraries", null).then(data => data)
 
-            await getBooksAndLibrariansByLibraries(libraries)
- 
-            return libraries
-        },
-        getLibrariesWithBooksDataload: async (args, req) => {
-            var libraries = await queryDB("select * from libraries", null).then(data => data)
-            if(libraries.length <= 0) return []
+        await getBooksAndLibrariansByLibraries(libraries)
 
-            //Push keys into an array
-            var keys = []
-            for(let library of libraries){
-                keys.push(library.id)
-            }
-            
-            var books = await getBooksByLibraryIds(keys)
+        return libraries
+    },
+    getLibrariesWithBooksDataload: async (args, req, context) => {
+        var libraries = await queryDB("select * from libraries", null).then(data => data)
+        if(libraries.length <= 0) return []
+        console.log(libraries)
+        //Push keys into an array
+        var keys = []
+        for(let library of libraries){
+            keys.push(library.id)
+        }
 
-            var groupedById = groupBy(book => book.library_id, books)
-            console.log("GroupByID: ", groupedById)
-            return libraries
-        },
-        getLibrariesWithBooksAndLibrariansDataload: async (args, req) => {
-            var libraries = await queryDB("select * from libraries", null).then(data => data)
-            if(libraries.length <= 0) return []
+        booksDataloader.load(1)
 
-            var keys = []
-            for(library in libraries){
-                keys.push(library.id)
-            }
+        return libraries
+    },
+    getLibrariesWithBooksAndLibrariansDataload: async (args, req) => {
+        var libraries = await queryDB("select * from libraries", null).then(data => data)
+        if(libraries.length <= 0) return []
 
-            const {books, librarians} = await getBooksAndLibrariansByLibraryIds(keys)
-            
-            return libraries
-        },
+        var keys = []
+        for(library in libraries){
+            keys.push(library.id)
+        }
+
+        const {books, librarians} = await getBooksAndLibrariansByLibraryIds(keys)
+        
+        return libraries
     }
 }
+
+const booksDataloader = new DataLoader(keys => getBooksByLibraryIds(keys))
+
 
 const queryDB = (sql, args) => new Promise((resolve, reject) => {
     dbMysql.query(sql, args, (err, rows) => {
@@ -82,10 +82,18 @@ const getBooksAndLibrariansByLibraries = async (libraries) => {
     return libraries
 }
 
+
 const getBooksByLibraryIds = async (libraryIds) => {
 
     const books = await queryDB("select * from books where library_id IN(?)", [libraryIds]).then(data => data)
-    return books
+
+    // Group books by library ids
+    var groupedById = groupBy(book => book.library_id, books)
+
+    // Map books in the order of the library ids
+    var mappedByID = map(libraryId => groupedById[libraryId], libraryIds)
+
+    return mappedByID
 }
 
 const getBooksAndLibrariansByLibraryIds = async (libraryIds) => {

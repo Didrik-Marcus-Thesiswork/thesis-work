@@ -1,26 +1,24 @@
 import { dbMongo } from '../db.js';
 
 var rootMongo = {
-    libraries: {
-        getLibraries: (args, req) => {
-            return dbMongo.collection("libraries").find().limit(args.limit).toArray()
-        },
-        getLibrariesWithBooks: async (args, req) => {
-            //Fetch libraries
-            var libraries = await dbMongo.collection("libraries").find().toArray()
+    getLibraries: (args, req) => {
+        return dbMongo.collection("libraries").find().limit(args.limit).toArray()
+    },
+    getLibrariesWithBooks: async (args, req) => {
+        //Fetch libraries
+        var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            await getBooksByLibraries(libraries)
+        await getBooksByLibraries(libraries)
 
-            return libraries
-        },
-        getLibrariesWithBooksAndLibrarians: async (args, req) => {
-            //Fetch libraries
-            var libraries = await dbMongo.collection("libraries").find().toArray()
+        return libraries
+    },
+    getLibrariesWithBooksAndLibrarians: async (args, req) => {
+        //Fetch libraries
+        var libraries = await dbMongo.collection("libraries").find().toArray()
 
-            await getBooksAndLibrariansByLibraries(libraries)
- 
-            return libraries
-        }
+        await getBooksAndLibrariansByLibraries(libraries)
+
+        return libraries
     }
 }
 const getBooksByLibraries = async (libraries) => {
