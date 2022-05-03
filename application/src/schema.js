@@ -17,10 +17,8 @@ const librariesSchema =`
     library_id : ID
   }
   type Query {
-    getLibraries(limit: Int): [Library]
-    getLibrariesWithBooks: [Library]
-    getLibrariesWithBooksAndLibrarians: [Library]
-    getLibrariesWithBooksDataload : [Library]
+    library(id: Int): Library
+    libraries(limit: Int): [Library]
   }
 `
 
