@@ -9,7 +9,7 @@ import { groupBy, map } from 'ramda';
 class Query {
     async libraries(args, context) {
         const rows = await queryDB("select * from libraries limit ?", [args.limit]).then(data => data)
-        if (!row.length) throw Error("Error") 
+        if (!rows.length) throw Error("Error") 
         return rows.map(row => new Library(row))
     }
     async library(args, context) {
