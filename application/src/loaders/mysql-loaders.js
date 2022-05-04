@@ -17,26 +17,28 @@ const getBooksByLibraryIds = async (libraryIds) => {
     const books = await queryDB(query, [libraryIds]).then(data => data)
 
     // Group books by library ids
-    var groupedById = groupBy(book => book.library_id, books)
+    const groupedById = groupBy(book => book.library_id, books)
 
     // Map books in the order of the library ids
-    var mappedByID = map(libraryId => groupedById[libraryId], libraryIds)
+    const mappedByID = map(libraryId => groupedById[libraryId], libraryIds)
 
     console.log("I made a request")
+
     return mappedByID
 }
 
 const getLibrariansByLibraryIds = async (libraryIds) => {
-    var query = "select * from librarians where library_id IN(?)"
+    const query = "select * from librarians where library_id IN(?)"
     const librarians = await queryDB(query, [libraryIds]).then(data => data)
 
     // Group books by library ids
-    var groupedById = groupBy(librarian => librarian.library_id, librarians)
+    const groupedById = groupBy(librarian => librarian.library_id, librarians)
 
     // Map books in the order of the library ids
-    var mappedByID = map(libraryId => groupedById[libraryId], libraryIds)
+    const mappedByID = map(libraryId => groupedById[libraryId], libraryIds)
 
     console.log("I made a request")
+    
     return mappedByID
 }
 export {booksDataLoader, librariansDataLoader}

@@ -1,4 +1,4 @@
-import { booksDataloader, librariansDataloader } from "../loaders/mongo-loaders.js";
+import { booksDataLoader, librariansDataLoader } from "../loaders/mongo-loaders.js";
 import express from 'express';
 import { librariesSchema } from '../schema.js'
 import { graphqlHTTP } from 'express-graphql';
@@ -11,13 +11,13 @@ class Query {
         var rows
         if (args.limit) rows = await dbMongo.collection("libraries").find().limit(args.limit).toArray()
         else rows = await dbMongo.collection("libraries").find().toArray()
-        if (!rows.length) throw Error("Error")
+        if (!rows.length) throw Error("Error: No libraries found")
         return rows.map(row => new Library(row))
     }
     async library(args, context) {
-        
+
         const row = await dbMongo.collection("libraries").find({ id: args.id }).toArray()
-        if (!row.length) throw Error("Error")
+        if (!row.length) throw Error("Error: No library ID specified")
         return new Library(row[0])
     }
 }
@@ -32,10 +32,10 @@ class Library {
     }
 
     async books(args) {
-        return booksDataloader.load(this.id)
+        return booksDataLoader.load(this.id)
     }
     async librarians(args) {
-        return librariansDataloader.load(this.id)
+        return librariansDataLoader.load(this.id)
     }
 }
 

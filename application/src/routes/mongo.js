@@ -9,12 +9,12 @@ class Query {
         var rows
         if (args.limit) rows = await dbMongo.collection("libraries").find().limit(args.limit).toArray()
         else rows = await dbMongo.collection("libraries").find().toArray()
-        if (!rows.length) throw Error("Error")
+        if (!rows.length) throw Error("Error: No libraries found")
         return rows.map(row => new Library(row))
     }
     async library(args, context) {
         const row = await dbMongo.collection("libraries").find({ id: args.id }).toArray()
-        if (!row.length) throw Error("Error")
+        if (!row.length) throw Error("Error: No library ID specified")
         return new Library(row[0])
     }
 }
