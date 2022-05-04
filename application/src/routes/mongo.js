@@ -1,18 +1,19 @@
 import express from 'express';
 import { librariesSchema } from '../schema.js'
-import { rootMongo } from '../root/mongo-root.js'
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema } from 'graphql';
 import { dbMongo } from '../db.js';
 
 class Query {
     async libraries(args, context) {
-        const rows = await dbMongo.collection("libraries").find().limit(args.limit).toArray()
+        var rows
+        if (args.limit) rows = await dbMongo.collection("libraries").find().limit(args.limit).toArray()
+        else rows = await dbMongo.collection("libraries").find().toArray()
         if (!rows.length) throw Error("Error")
         return rows.map(row => new Library(row))
     }
     async library(args, context) {
-        const row = await dbMongo.collection("libraries").find({id: args.id}).toArray()
+        const row = await dbMongo.collection("libraries").find({ id: args.id }).toArray()
         if (!row.length) throw Error("Error")
         return new Library(row[0])
     }
@@ -27,12 +28,16 @@ class Library {
         this._librarians = row.librarians;
     }
 
-    async books(_, context) {
-        const rows = dbMongo.collection("books").find({ library_id: this.id }).toArray()
+    async books(args, context) {
+        var rows
+        if (args.limit) rows = dbMongo.collection("books").find({ library_id: this.id }).limit(args.limit).toArray()
+        else rows = dbMongo.collection("books").find({ library_id: this.id }).toArray()
         return rows;
     }
-    async librarians(_, context) {
-        const rows = dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
+    async librarians(args, context) {
+        var rows
+        if (args.limit) rows = dbMongo.collection("librarians").find({ library_id: this.id }).limit(args.limit).toArray()
+        else rows = dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
         return rows;
     }
 }

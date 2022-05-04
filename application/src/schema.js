@@ -3,8 +3,8 @@ const librariesSchema =`
     id : ID,
     name : String,
     street : String,
-    books: [Book],
-    librarians: [Librarian]
+    books(limit: Int): [Book],
+    librarians(limit: Int): [Librarian]
   }
   type Book {
     title : String,

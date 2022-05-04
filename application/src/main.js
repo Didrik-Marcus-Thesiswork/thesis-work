@@ -8,4 +8,4 @@ app.use("/mysql", mysqlRouter)
 
 app.listen(4000);
 
-console.log('Running a GraphQL API server at http://localhost:4000/libraries/mongo');
+console.log('Running a GraphQL API server at http://localhost:4000/mysql/libraries');
