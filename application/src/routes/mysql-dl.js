@@ -3,6 +3,7 @@ import { librariesSchema } from '../schema.js'
 import { graphqlHTTP } from 'express-graphql';
 import { buildSchema } from 'graphql';
 import { dbMysql } from '../db.js';
+import { booksDataLoader, librariansDataLoader } from '../loaders/mysql-loaders.js'
 
 class Query {
     async libraries(args, context) {
@@ -29,18 +30,11 @@ class Library {
         this._librarians = row.librarians;
     }
 
-    async books(args, context) {
-        var query = "select * from books where library_id = ?"
-        if (args.limit) query += " limit ?"
-        const rows = await queryDB(query, [this.id, args.limit]).then(data => data)
-        console.log("books", rows)
-        return rows;
+    async books(_, context) {
+        return booksDataLoader.load(this.id);
     }
-    async librarians(args, context) {
-        var query = "select * from librarians where library_id = ?"
-        if (args.limit) query += " limit ?"
-        const rows = await queryDB(query, [this.id, args.limit]).then(data => data)
-        return rows;
+    async librarians(_, context) {
+        return librariansDataLoader.load(this.id);
     }
 }
 
@@ -67,12 +61,14 @@ const queryDB = (sql, args) => new Promise((resolve, reject) => {
     });
 });
 
-var mysqlRouter = express.Router()
 
-mysqlRouter.use('/', graphqlHTTP({
+
+var mysqlDlRouter = express.Router()
+
+mysqlDlRouter.use('/', graphqlHTTP({
     schema: buildSchema(librariesSchema),
     rootValue: new Query(),
     graphiql: true
 }))
 
-export { mysqlRouter }
+export { mysqlDlRouter }

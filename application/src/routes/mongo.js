@@ -29,15 +29,11 @@ class Library {
     }
 
     async books(args, context) {
-        var rows
-        if (args.limit) rows = dbMongo.collection("books").find({ library_id: this.id }).limit(args.limit).toArray()
-        else rows = dbMongo.collection("books").find({ library_id: this.id }).toArray()
+        const rows = dbMongo.collection("books").find({ library_id: this.id }).toArray()
         return rows;
     }
     async librarians(args, context) {
-        var rows
-        if (args.limit) rows = dbMongo.collection("librarians").find({ library_id: this.id }).limit(args.limit).toArray()
-        else rows = dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
+        const rows = dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
         return rows;
     }
 }
