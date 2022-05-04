@@ -2,7 +2,8 @@ import { dbMongo } from '../db.js';
 import Dataloader from 'dataloader'
 import { groupBy, map } from 'ramda'
 
-const booksDataloader = new Dataloader(keys => booksByLibraryIds(keys))
+const booksDataloader = new Dataloader(keys => booksByLibraryIds(keys), {cache: false})
+const librariansDataloader = new Dataloader(keys => librariansByLibraryIds(keys), {cache: false})
 
 async function booksByLibraryIds(libraryIds) {
     console.log('booksByLibraryIds', libraryIds)
@@ -15,4 +16,16 @@ async function booksByLibraryIds(libraryIds) {
     return map(library_id => groupedById[library_id], libraryIds)
 }
 
-export { booksDataloader }
+async function librariansByLibraryIds(libraryIds) {
+    console.log('librariansByLibraryIds', libraryIds)
+
+    // fetch librarians by library id
+    const librarians = await dbMongo.collection("librarians").find( {library_id : {$in : libraryIds} }).toArray()
+
+    // group librarians to their respective library
+    const groupedById = groupBy(librarians => librarians.library_id, librarians)
+
+    return map(library_id => groupedById[library_id], libraryIds)
+}
+
+export { booksDataloader, librariansDataloader }

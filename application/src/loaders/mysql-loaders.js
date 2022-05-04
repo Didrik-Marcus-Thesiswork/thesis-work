@@ -2,8 +2,8 @@ import { dbMysql } from '../db.js';
 import { groupBy, map } from 'ramda';
 import DataLoader from 'dataloader';
 
-const booksDataLoader = new DataLoader(keys => getBooksByLibraryIds(keys)) 
-const librariansDataLoader = new DataLoader(keys => getLibrariansByLibraryIds(keys))
+const booksDataLoader = new DataLoader(keys => getBooksByLibraryIds(keys), {cache: false}) 
+const librariansDataLoader = new DataLoader(keys => getLibrariansByLibraryIds(keys), {cache: false})
 
 const queryDB = (sql, args) => new Promise((resolve, reject) => {
     dbMysql.query(sql, args, (err, rows) => {
