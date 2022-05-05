@@ -3,14 +3,12 @@ import { mongoRouter } from './routes/mongo.js'
 import { mysqlRouter } from './routes/mysql.js'
 import { mongoDlRouter } from './routes/mongo-dl.js';
 import { mysqlDlRouter } from './routes/mysql-dl.js';
-import { fakerRouter } from './routes/faker-router.js';
 var app = express();
 
 app.use("/mongo", mongoRouter)
 app.use("/mysql", mysqlRouter)
 app.use("/dl/mysql", mysqlDlRouter)
 app.use("/dl/mongo", mongoDlRouter)
-app.use("/faker", fakerRouter)
 
 app.listen(4000);
 

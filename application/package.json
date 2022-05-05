@@ -1,10 +1,12 @@
 {
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0 src/main.js -L"
+    "start": "nodemon --inspect=0.0.0.0 src/main.js -L",
+    "insert": "node src/faker-insert.js"
   },
   "type": "module",
   "dependencies": {
+    "@faker-js/faker": "^6.3.1",
     "body-parser": "^1.19.2",
     "dataloader": "^2.1.0",
     "express": "^4.17.3",
@@ -14,8 +16,5 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.15",
     "ramda": "^0.28.0"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^6.3.1"
   }
 }
