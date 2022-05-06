@@ -2,13 +2,14 @@ import { faker } from '@faker-js/faker';
 import { exit } from 'process';
 import { dbMysql, dbMongo } from './db.js'
 
-async function main(amount) {
+async function main() {
     // Recreate the content of databases
     await cleanDatabases()
 
-    for(let libraryId = 1; libraryId < (amount+1); libraryId++){
+    const librariesAmount = 10
+    for(let libraryId = 1; libraryId <= librariesAmount; libraryId++){
        
-        const { library, books, librarians } = generatedFakeData((amount+1),libraryId)
+        const { library, books, librarians } = generatedFakeData(1000,libraryId)
 
         await insertToMySQL(library, books, librarians, libraryId)
         await insertToMongo(library, books, librarians, libraryId)
@@ -43,6 +44,7 @@ async function insertToMySQL(library, books, librarians, id) {
 function generatedFakeData(amount, libraryId){
 
     const library = {
+        _id: libraryId,
         name: faker.company.companyName(),
         street: faker.address.city(),
     }
@@ -51,7 +53,7 @@ function generatedFakeData(amount, libraryId){
     const librarians = []
 
      // generate fake data for librarians and books
-    for(let i = 1; i < amount; i++){
+    for(let i = 1; i <= amount; i++){
 
         // create entries in memory
         books.push({

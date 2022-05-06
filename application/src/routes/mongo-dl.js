@@ -24,7 +24,7 @@ class Query {
 
 class Library {
     constructor(row) {
-        this.id = row.id;
+        this.id = row._id;
         this.name = row.name;
         this.street = row.street;
         this._books = row.books;

@@ -23,7 +23,7 @@ const dbMysql = mysql.createConnection({
 
 dbMysql.connect(function (err) {
     if(err) console.error("MySQL error when connecting", err)
-    else console.log("Connection to MySQL DB established", err)
+    else console.log("Connection to MySQL DB established")
 })
 
 export { dbMysql, dbMongo }
