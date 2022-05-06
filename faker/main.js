@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { dbMysql, dbMongo } from './db.js'
 
-async function fakerData(entries) {
+async function main(amount) {
 
     await cleanDatabases()
 
     // libraries loop
-    for(let libraryId = 1; libraryId < entries; libraryId++){
+    for(let libraryId = 1; libraryId < (amount+1); libraryId++){
         const results = {}
 
         const library = {
@@ -18,24 +18,36 @@ async function fakerData(entries) {
         results.mySQL = await queryDB("INSERT INTO libraries (name, street) VALUES (?,?)", [library.name, library.street]).then(data => data)
         results.mongo = await dbMongo.collection("libraries").insertOne(library)
        
-        const { books, librarians } = generatedFakeData(entries,libraryId)
+        const { books, librarians } = generatedFakeData((amount+1),libraryId)
+        
+        // format objects for mysql syntax
+        const mySQLBooks = []
+        const mySQLLibrarians = []
+        books.forEach(book => {
+            mySQLBooks.push(Object.values(book))
+            
+        });
+        librarians.forEach(librarian => {
+            mySQLLibrarians.push(Object.values(librarian))
+        });
+        
 
-        console.log('first book',books[0])
-        console.log('first librarian', librarians[0])
-        return
-
-        console.log(`Inserting the following books into library ${libraryId}: `, books)
-        return
-
+        console.log("inserting books into mysql...")
+        console.log(mySQLBooks)
+        await dbMysql.query("INSERT INTO books (title, release_year, library_id) VALUES ?", [mySQLBooks])
+        console.log("inserting books into mongo...")
         await dbMongo.collection("books").insertMany(books)
-        await dbMysql.query("INSERT INTO books (name, release_year, library_id) VALUES ?", [books])
 
-        console.log(`Inserting the following librarians into library ${i}: `, librarians)
+        console.log("inserting librarians into mysql...")
+        await dbMysql.query("INSERT INTO librarians (name, age, library_id) VALUES ?", [mySQLLibrarians])
+        console.log("inserting librarians into mongo...")
         await dbMongo.collection("librarians").insertMany(librarians)
-        await dbMysql.query("INSERT INTO librarians (name, age, library_id) VALUES ?", [librarians])
+
+        console.log("done")
+        
     }
 
-    
+    return
 }
 
 function generatedFakeData(amount, libraryId){
@@ -44,12 +56,12 @@ function generatedFakeData(amount, libraryId){
     const librarians = []
 
      // generate fake data for librarians and books
-    for(let i = 1; i < (amount+1); i++){
+    for(let i = 1; i < amount; i++){
 
         // create entries in memory
         books.push({
-            name: faker.name.findName(),
-            release_year: faker.datatype.number({min: -2000, max: 2022}),
+            title: faker.animal.type(),
+            release_year: faker.datatype.number({min: 1000, max: 2022}),
             library_id: libraryId // TODO
         })
 
@@ -76,14 +88,14 @@ async function cleanDatabases(){
     await dbMysql.query("DROP TABLE IF EXISTS librarians")
     await dbMysql.query("DROP TABLE IF EXISTS libraries")
     
-    console.log("Creating tables...")
+    console.log("Recreating tables...")
 
     await dbMysql.query(`
-    CREATE TABLE IF NOT EXISTS libraries(
-    id INT AUTO_INCREMENT NOT NULL,
-    name VARCHAR(200) NOT NULL,
-    street VARCHAR(200) NOT NULL,
-    PRIMARY KEY (id)
+        CREATE TABLE IF NOT EXISTS libraries(
+        id INT AUTO_INCREMENT NOT NULL,
+        name VARCHAR(200) NOT NULL,
+        street VARCHAR(200) NOT NULL,
+        PRIMARY KEY (id)
     )`)
     await dbMysql.query(`
         CREATE TABLE IF NOT EXISTS books(
@@ -105,9 +117,8 @@ async function cleanDatabases(){
     )`)
 
     console.log('Recreating collections...')
-    //NOT WORKING :)
+
     const booksResult = await dbMongo.collection("books").drop()
-    console.log("booksResult:", booksResult)
     if(booksResult){
         dbMongo.createCollection("books")
     }
@@ -119,9 +130,7 @@ async function cleanDatabases(){
     if(librariesResult){
         dbMongo.createCollection("libraries")
     }
-    
-
-    return
 }
 
-await fakerData(10)
+await main(10)
+console.log("all entries inserted...")
