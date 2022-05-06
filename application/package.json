@@ -1,8 +1,7 @@
 {
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0 src/main.js -L",
-    "insert": "node src/faker-insert.js"
+    "start": "nodemon --inspect=0.0.0.0 src/main.js -L"
   },
   "type": "module",
   "dependencies": {
