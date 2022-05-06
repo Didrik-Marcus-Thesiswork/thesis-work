@@ -5,7 +5,7 @@ import mysql from 'mysql'
 const mongo_url = 'mongodb://root:root@localhost:27017/admin'
 const client = new MongoClient(mongo_url)
 const dbName = 'test'
-await client.connect(function(err){
+client.connect(function(err){
     if(err) console.error("MongoDB error when connecting", err)
     else console.log("connection to MongoDB established")
 })
@@ -21,7 +21,7 @@ const dbMysql = mysql.createConnection({
     database : 'ms-db'
 });
 
-await dbMysql.connect(function (err) {
+dbMysql.connect(function (err) {
     if(err) console.error("MySQL error when connecting", err)
     else console.log("Connection to MySQL DB established")
 })

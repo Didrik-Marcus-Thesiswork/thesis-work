@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { exit } from 'process';
 import { dbMysql, dbMongo } from './db.js'
 
 async function main(amount) {
@@ -9,22 +10,20 @@ async function main(amount) {
        
         const { library, books, librarians } = generatedFakeData((amount+1),libraryId)
 
-        await insertToMySQL(library, books, librarians)
-        await insertToMongo(library, books, librarians)
-
-        console.log("done")
+        await insertToMySQL(library, books, librarians, libraryId)
+        await insertToMongo(library, books, librarians, libraryId)
     }
     return
 }
-async function insertToMongo(library, books, librarians) {
+async function insertToMongo(library, books, librarians, id) {
 
-    console.log("inserting into mongo...")
+    console.log(`inserting books, librarians into library ${id} for MongoDB...`)
     await dbMongo.collection("libraries").insertOne(library)
     await dbMongo.collection("books").insertMany(books)
     await dbMongo.collection("librarians").insertMany(librarians)
 }
 
-async function insertToMySQL(library, books, librarians) {
+async function insertToMySQL(library, books, librarians, id) {
     const mySQLBooks = []
     const mySQLLibrarians = []
     books.forEach(book => {
@@ -35,7 +34,7 @@ async function insertToMySQL(library, books, librarians) {
         mySQLLibrarians.push(Object.values(librarian))
     });
 
-    console.log("inserting into mysql...")
+    console.log(`inserting books, librarians into library ${id} for MySQL...`)
     dbMysql.query("INSERT INTO libraries (name, street) VALUES(?, ?)", [library.name, library.street])
     dbMysql.query("INSERT INTO books (title, release_year, library_id) VALUES ?", [mySQLBooks])
     dbMysql.query("INSERT INTO librarians (name, age, library_id) VALUES ?", [mySQLLibrarians])
@@ -108,19 +107,16 @@ async function cleanDatabases(){
 
     console.log('Recreating collections...')
 
-    const booksResult = await dbMongo.collection("books").drop()
-    if(booksResult){
-        await dbMongo.createCollection("books")
-    }
-    const librariansResult = await dbMongo.collection("librarians").drop()
-    if(librariansResult){
-        await dbMongo.createCollection("librarians")
-    }
-    const librariesResult = await dbMongo.collection("libraries").drop()
-    if(librariesResult){
-        await dbMongo.createCollection("libraries")
-    }
+    await dbMongo.collection("books").drop().catch(err => console.error("Drop collection error - books:",err))
+    await dbMongo.createCollection("books").catch(err => console.error("Create collection error - books:",err))
+    
+    await dbMongo.collection("librarians").drop().catch(err => console.error("Drop collection error - librarians:",err))
+    await dbMongo.createCollection("librarians").catch(err => console.error("Create collection error - librarians:",err))
+    
+    await dbMongo.collection("libraries").drop().catch(err => console.error("Drop collection error - libraries:",err))
+    await dbMongo.createCollection("libraries").catch(err => console.error("Create collection error - libraries:",err))
+    
 }
-dbMongo.c
 await main(10)
 console.log("all entries inserted...")
+exit()
