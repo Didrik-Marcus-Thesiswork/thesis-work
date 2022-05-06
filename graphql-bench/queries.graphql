@@ -1,5 +1,7 @@
-query getLibraries(limit:10) {
+query libraries {
     id,
     name,
     street
+    books,
+    librarians
 }
