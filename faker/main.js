@@ -6,14 +6,14 @@ async function main() {
     // Recreate the content of databases
     await cleanDatabases()
 
-    const librariesAmount = 10
-    for(let libraryId = 1; libraryId <= librariesAmount; libraryId++){
-       
-        const { library, books, librarians } = generatedFakeData(1000,libraryId)
+    const libraryIds = [1,2,3,4,5,6,7,8,9,10]
 
+    for(let libraryId of libraryIds) {
+        const { library, books, librarians } = generatedFakeData(1000,libraryId)
         await insertToMySQL(library, books, librarians, libraryId)
         await insertToMongo(library, books, librarians, libraryId)
     }
+    
     return
 }
 async function insertToMongo(library, books, librarians, id) {
@@ -22,24 +22,36 @@ async function insertToMongo(library, books, librarians, id) {
     await dbMongo.collection("libraries").insertOne(library)
     await dbMongo.collection("books").insertMany(books)
     await dbMongo.collection("librarians").insertMany(librarians)
+
+    return true
 }
 
 async function insertToMySQL(library, books, librarians, id) {
+    console.log("LIBRARY ID: "+ id)
     const mySQLBooks = []
     const mySQLLibrarians = []
-    books.forEach(book => {
+    await books.forEach(book => {
         mySQLBooks.push(Object.values(book))
         
     });
-    librarians.forEach(librarian => {
+    await librarians.forEach(librarian => {
         mySQLLibrarians.push(Object.values(librarian))
     });
 
     console.log(`inserting books, librarians into library ${id} for MySQL...`)
-    dbMysql.query("INSERT INTO libraries (name, street) VALUES(?, ?)", [library.name, library.street])
-    dbMysql.query("INSERT INTO books (title, release_year, library_id) VALUES ?", [mySQLBooks])
-    dbMysql.query("INSERT INTO librarians (name, age, library_id) VALUES ?", [mySQLLibrarians])
+    await queryDB("INSERT INTO libraries (name, street) VALUES(?, ?)", [library.name, library.street])
+    await queryDB("INSERT INTO books (title, release_year, library_id) VALUES ?", [mySQLBooks])
+    await queryDB("INSERT INTO librarians (name, age, library_id) VALUES ?", [mySQLLibrarians])
+
+    return true
 }
+
+const queryDB = (sql, args) => new Promise((resolve, reject) => {
+    dbMysql.query(sql, args, (err, rows) => {
+        if (err) return reject(err);
+        rows.changedRows || rows.affectedRows || rows.insertId ? resolve(true) : resolve(rows);
+    });
+});
 
 function generatedFakeData(amount, libraryId){
 
