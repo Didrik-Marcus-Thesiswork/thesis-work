@@ -1,13 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { dbMysql, dbMongo } from './db.js'
 
-function fakerData(entries) {
+async function fakerData(entries) {
 
-    cleanDatabases()
+    await cleanDatabases()
 
     // libraries loop
-    for(let i = 0; i < entries; i++){
-
+    for(let libraryId = 1; libraryId < entries; libraryId++){
         const results = {}
 
         const library = {
@@ -15,16 +14,17 @@ function fakerData(entries) {
             street: faker.address.city(),
         }
 
-        console.log(`Inserting the following library: `, librarians)
-        results.mySQL = await dbMysql.query("INSERT INTO libraries VALUES ?", [library])
+        console.log(`Inserting the following library: `, library)
+        results.mySQL = await queryDB("INSERT INTO libraries (name, street) VALUES (?,?)", [library.name, library.street]).then(data => data)
         results.mongo = await dbMongo.collection("libraries").insertOne(library)
        
-        const { books, librarians } = generatedFakeData(entries)
+        const { books, librarians } = generatedFakeData(entries,libraryId)
 
         console.log('first book',books[0])
         console.log('first librarian', librarians[0])
+        return
 
-        console.log(`Inserting the following books into library ${i}: `, books)
+        console.log(`Inserting the following books into library ${libraryId}: `, books)
         return
 
         await dbMongo.collection("books").insertMany(books)
@@ -35,53 +35,55 @@ function fakerData(entries) {
         await dbMysql.query("INSERT INTO librarians (name, age, library_id) VALUES ?", [librarians])
     }
 
-    return 1
+    
 }
 
-function generatedFakeData(entries){
+function generatedFakeData(amount, libraryId){
 
     const books = []
     const librarians = []
 
      // generate fake data for librarians and books
-    for(let ii = 0; ii < entries; ii++){
+    for(let i = 1; i < (amount+1); i++){
 
         // create entries in memory
         books.push({
             name: faker.name.findName(),
             release_year: faker.datatype.number({min: -2000, max: 2022}),
-            library_id: i // TODO
+            library_id: libraryId // TODO
         })
 
         librarians.push({
             name: faker.name.findName(),
             age: faker.datatype.number({min: 10, max: 100}),
-            library_id: i // TODO
+            library_id: libraryId // TODO
         })
     }
     return { books, librarians }
 }
 
-async function cleanDatabases(){
-    console.log('dropping tables...')
+const queryDB = (sql, args) => new Promise((resolve, reject) => {
+    dbMysql.query(sql, args, (err, rows) => {
+        if (err) return reject(err);
+        rows.changedRows || rows.affectedRows || rows.insertId ? resolve(true) : resolve(rows);
+    });
+});
 
-    await dbMysql.query("DROP TABLE IF EXISTS libraries")
+async function cleanDatabases(){
+    console.log('Dropping tables...')
+
     await dbMysql.query("DROP TABLE IF EXISTS books")
     await dbMysql.query("DROP TABLE IF EXISTS librarians")
-
-    await dbMongo.collection("libraries").drop()
-    await dbMongo.collection("books").drop()
-    await dbMongo.collection("librarians").drop()
-
-
-    console.log("recreating tables...")
+    await dbMysql.query("DROP TABLE IF EXISTS libraries")
+    
+    console.log("Creating tables...")
 
     await dbMysql.query(`
-        CREATE TABLE IF NOT EXISTS libraries(
-        id INT AUTO_INCREMENT NOT NULL,
-        name VARCHAR(200) NOT NULL,
-        street VARCHAR(200) NOT NULL,
-        PRIMARY KEY (id)
+    CREATE TABLE IF NOT EXISTS libraries(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    street VARCHAR(200) NOT NULL,
+    PRIMARY KEY (id)
     )`)
     await dbMysql.query(`
         CREATE TABLE IF NOT EXISTS books(
@@ -102,11 +104,24 @@ async function cleanDatabases(){
         FOREIGN KEY (library_id) REFERENCES libraries(id)
     )`)
 
-    await dbMongo.createCollection("libraries")
-    await dbMongo.createCollection("books")
-    await dbMongo.createCollection("librarians")
+    console.log('Recreating collections...')
+    //NOT WORKING :)
+    const booksResult = await dbMongo.collection("books").drop()
+    console.log("booksResult:", booksResult)
+    if(booksResult){
+        dbMongo.createCollection("books")
+    }
+    const librariansResult = await dbMongo.collection("librarians").drop()
+    if(librariansResult){
+        dbMongo.createCollection("librarians")
+    }
+    const librariesResult = await dbMongo.collection("libraries").drop()
+    if(librariesResult){
+        dbMongo.createCollection("libraries")
+    }
+    
 
     return
 }
 
-fakerData(10)
+await fakerData(10)

@@ -2,7 +2,7 @@ import {MongoClient, ObjectId} from 'mongodb';
 import mysql from 'mysql'
 
 // MongoDB Connection
-const mongo_url = 'mongodb://root:root@mongo-db:27017/admin'
+const mongo_url = 'mongodb://root:root@localhost:27017/admin'
 const client = new MongoClient(mongo_url)
 const dbName = 'test'
 await client.connect(function(err){
@@ -14,16 +14,16 @@ const dbMongo = client.db(dbName)
 
 // MySQL Connection
 const dbMysql = mysql.createConnection({
-    host     : 'ms-db',
+    host     : 'localhost',
     port     :  3306, 
     user     : 'root',
     password : 'root',
     database : 'ms-db'
 });
 
-dbMysql.connect(function (err) {
+await dbMysql.connect(function (err) {
     if(err) console.error("MySQL error when connecting", err)
-    else console.log("Connection to MySQL DB established", err)
+    else console.log("Connection to MySQL DB established")
 })
 
 export { dbMysql, dbMongo }
