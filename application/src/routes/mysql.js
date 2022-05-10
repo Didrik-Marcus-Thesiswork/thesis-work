@@ -33,14 +33,13 @@ class Library {
         var query = "select * from books where library_id = ?"
         if (args.limit) query += " limit ?"
         const rows = await queryDB(query, [this.id, args.limit]).then(data => data)
-        console.log("books", rows)
-        return rows;
+        return rows.map(row => new Book(row))
     }
     async librarians(args, context) {
         var query = "select * from librarians where library_id = ?"
         if (args.limit) query += " limit ?"
         const rows = await queryDB(query, [this.id, args.limit]).then(data => data)
-        return rows;
+        return rows.map(row => new Librarian(row))
     }
 }
 

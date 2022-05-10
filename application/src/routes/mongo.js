@@ -29,12 +29,12 @@ class Library {
     }
 
     async books(args, context) {
-        const rows = dbMongo.collection("books").find({ library_id: this.id }).toArray()
-        return rows;
+        const rows = await dbMongo.collection("books").find({ library_id: this.id }).toArray()
+        return rows.map(row => new Book(row))
     }
     async librarians(args, context) {
-        const rows = dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
-        return rows;
+        const rows = await dbMongo.collection("librarians").find({ library_id: this.id }).toArray()
+        return rows.map(row => new Librarian(row))
     }
 }
 

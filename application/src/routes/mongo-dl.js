@@ -32,10 +32,12 @@ class Library {
     }
 
     async books(args) {
-        return booksDataLoader.load(this.id)
+        const rows = await booksDataLoader.load(this.id)
+        return rows.map(row => new Book(row))
     }
     async librarians(args) {
-        return librariansDataLoader.load(this.id)
+        const rows = await librariansDataLoader.load(this.id)
+        return rows.map(row => new Librarian(row))
     }
 }
 
