@@ -15,7 +15,7 @@ async function booksByLibraryIds(libraryIds) {
     // Map books in the order of the library ids
     const mappedById = map(library_id => groupedById[library_id], libraryIds)
 
-    console.log("I made a request")
+    console.log("Book loader: I made a request")
 
     return mappedById
 }
@@ -31,7 +31,7 @@ async function librariansByLibraryIds(libraryIds) {
     // Map books in the order of the library ids
     const mappedByID = map(library_id => groupedById[library_id], libraryIds)
 
-    console.log("I made a request")
+    console.log("Librarian loader: I made a request")
 
     return mappedByID
 }
