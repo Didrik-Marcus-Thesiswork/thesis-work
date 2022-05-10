@@ -28,4 +28,5 @@ services:
       - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     ports:
       - '27017:27017'
+    command: --quiet --logpath /dev/null 
     
