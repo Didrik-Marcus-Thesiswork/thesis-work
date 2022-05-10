@@ -1,24 +1,132 @@
-- name: database-comparison
+- name: test-case-1
   warmup_duration: 20
   duration: 20
   candidates:
   - name: mysql
     url: http://{YOUR-IP}:4000/mysql
-    query: libraries
+    query: getLibrariesLimit5
     queries_file: queries.graphql
   - name: mongodb
     url: http://{YOUR-IP}:4000/mongo
-    query: libraries
+    query: getLibrariesLimit5
     queries_file: queries.graphql
   - name: mysql-dl
     url: http://{YOUR-IP}/dl/mysql
-    query: libraries
+    query: getLibrariesLimit5
     queries_file: queries.graphql
   - name: mongodb-dl
     url: http://{YOUR-IP}:4000/dl/mongo
-    query: libraries
+    query: getLibrariesLimit5
     queries_file: queries.graphql
   rps:
   - 100
-  - 200
-  - 300
+- name: test-case-2
+  warmup_duration: 20
+  duration: 20
+  candidates:
+  - name: mysql
+    url: http://{YOUR-IP}:4000/mysql
+    query: getLibrariesLimit5WithBooks
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://{YOUR-IP}:4000/mongo
+    query: getLibrariesLimit5WithBooks
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: getLibrariesLimit5WithBooks
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: getLibrariesLimit5WithBooks
+    queries_file: queries.graphql
+  rps:
+  - 100
+- name: test-case-3
+  warmup_duration: 20
+  duration: 20
+  candidates:
+  - name: mysql
+    url: http://{YOUR-IP}:4000/mysql
+    query: getLibrariesLimit5WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://{YOUR-IP}:4000/mongo
+    query: getLibrariesLimit5WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: getLibrariesLimit5WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: getLibrariesLimit5WithBooksAndLibrarians
+    queries_file: queries.graphql
+  rps:
+  - 100
+- name: test-case-4
+  warmup_duration: 20
+  duration: 20
+  candidates:
+  - name: mysql
+    url: http://{YOUR-IP}:4000/mysql
+    query: getLibrariesLimit10
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://{YOUR-IP}:4000/mongo
+    query: getLibrariesLimit10
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: getLibrariesLimit10
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: getLibrariesLimit10
+    queries_file: queries.graphql
+  rps:
+  - 100
+- name: test-case-5
+  warmup_duration: 20
+  duration: 20
+  candidates:
+  - name: mysql
+    url: http://{YOUR-IP}:4000/mysql
+    query: getLibrariesLimit10WithBooks
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://{YOUR-IP}:4000/mongo
+    query: getLibrariesLimit10WithBooks
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: getLibrariesLimit10WithBooks
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: getLibrariesLimit10WithBooks
+    queries_file: queries.graphql
+  rps:
+  - 100
+- name: test-case-6
+  warmup_duration: 20
+  duration: 20
+  candidates:
+  - name: mysql
+    url: http://{YOUR-IP}:4000/mysql
+    query: getLibrariesLimit10WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mongodb
+    url: http://{YOUR-IP}:4000/mongo
+    query: getLibrariesLimit10WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: getLibrariesLimit10WithBooksAndLibrarians
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: getLibrariesLimit10WithBooksAndLibrarians
+    queries_file: queries.graphql
+  rps:
+  - 100

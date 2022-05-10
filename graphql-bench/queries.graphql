@@ -1,7 +1,49 @@
-query libraries {
-    id,
-    name,
-    street
-    books,
-    librarians
+query getLibrariesLimit5 {
+    libraries(limit:5){
+        id,
+        name,
+        street
+    }
+}
+query getLibrariesLimit5WithBooks {
+    libraries(limit:5){
+        id,
+        name,
+        street,
+        books
+    }
+}
+query getLibrariesLimit5WithBooksAndLibrarians {
+    libraries(limit:5){
+        id,
+        name,
+        street
+        books,
+        librarians
+    }
+}
+
+query getLibrariesLimit10 {
+    libraries(limit:10){
+        id,
+        name,
+        street
+    }
+}
+query getLibrariesLimit10WithBooks {
+    libraries(limit:10){
+        id,
+        name,
+        street,
+        books
+    }
+}
+query getLibrariesLimit10WithBooksAndLibrarians {
+    libraries(limit:10){
+        id,
+        name,
+        street,
+        books,
+        librarians
+    }
 }
