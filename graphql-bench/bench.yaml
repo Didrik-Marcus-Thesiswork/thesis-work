@@ -1,14 +1,22 @@
 - name: database-comparison
-  warmup_duration: 5
+  warmup_duration: 20
   duration: 20
   candidates:
   - name: mysql
-    url: http://{YOUR-IP}:4000/libraries/mysql
-    query: getLibraries
+    url: http://{YOUR-IP}:4000/mysql
+    query: libraries
     queries_file: queries.graphql
   - name: mongodb
-    url: http://{YOUR-IP}:4000/libraries/mongodb
-    query: getLibraries
+    url: http://{YOUR-IP}:4000/mongo
+    query: libraries
+    queries_file: queries.graphql
+  - name: mysql-dl
+    url: http://{YOUR-IP}/dl/mysql
+    query: libraries
+    queries_file: queries.graphql
+  - name: mongodb-dl
+    url: http://{YOUR-IP}:4000/dl/mongo
+    query: libraries
     queries_file: queries.graphql
   rps:
   - 100

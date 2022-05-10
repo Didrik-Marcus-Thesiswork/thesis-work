@@ -7,6 +7,9 @@ services:
       - 4000:4000
     volumes: 
       - ./application/src:/application/src
+    depends_on:
+      - ms-db
+      - mongo-db
   ms-db:
     build: ./mysql
     platform: linux/amd64
