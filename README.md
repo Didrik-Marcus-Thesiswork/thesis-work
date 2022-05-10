@@ -3,13 +3,20 @@ A repo for all source code for our thesis work comparing GraphQL paired with dif
 
 ## setup
 
-Change the ip value in /graphql-bench/bench.yaml to your local ip (ex. 192.168.x.x)
+Change the ip value in `/graphql-bench/bench.yaml` to your local ip (ex. 192.168.x.x)
 
-Start the server by going into in /application folder and run: `docker-compose build && docker-compose up` 
+Start the server by going into in `/application` folder and run: 
 
-Insert fake data by going into /faker folder and run: `npm run main`.
+```bash
+docker-compose build && docker-compose up
+``` 
 
-Start the benchmark by running the following script in /graphql-bench folder:
+Insert fake data by going into `/faker` folder and run: 
+```bash
+npm run main
+```
+
+Start the benchmark by running the following script in `/graphql-bench` folder:
 
 ```bash
    cat bench.yaml | docker run -i --rm -p 8050:8050 -v $(pwd)/queries.graphql:/graphql-bench/ws/queries.graphql hasura/graphql-bench:v0.3.1
