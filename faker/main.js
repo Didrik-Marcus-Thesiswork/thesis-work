@@ -131,6 +131,6 @@ async function cleanDatabases(){
     await dbMongo.createCollection("libraries").catch(err => console.error("Create collection error - libraries:",err))
     
 }
-await main(10)
+await main()
 console.log("all entries inserted...")
 exit()
