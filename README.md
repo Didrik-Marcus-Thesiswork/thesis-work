@@ -18,8 +18,13 @@ npm run main
 
 Start the benchmark by running the following script in `/graphql-bench` folder:
 
+Linux/Mac
 ```bash
    cat bench.yaml | docker run -i --rm -p 8050:8050 -v $(pwd)/queries.graphql:/graphql-bench/ws/queries.graphql hasura/graphql-bench:v0.3.1
+```
+Windows:
+```bash
+   cat bench.yaml | docker run -i --rm -p 8050:8050 -v $(cd)/queries.graphql:/graphql-bench/ws/queries.graphql hasura/graphql-bench:v0.3.1
 ```
 
 Once the tests are completed the results will be avaliable at [http://0.0.0.0:8050/](http://0.0.0.0:8050/)
