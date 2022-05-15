@@ -10,7 +10,11 @@ query getLibrariesLimit5WithBooks {
         id,
         name,
         street,
-        books
+        books {
+            title,
+            release_year,
+            library_id
+        }
     }
 }
 query getLibrariesLimit5WithBooksAndLibrarians {
@@ -18,8 +22,16 @@ query getLibrariesLimit5WithBooksAndLibrarians {
         id,
         name,
         street
-        books,
-        librarians
+        books {
+            title,
+            release_year,
+            library_id
+        },
+        librarians {
+            name,
+            age,
+            library_id
+        }
     }
 }
 
@@ -35,7 +47,11 @@ query getLibrariesLimit10WithBooks {
         id,
         name,
         street,
-        books
+        books {
+            title,
+            release_year,
+            library_id
+        }
     }
 }
 query getLibrariesLimit10WithBooksAndLibrarians {
@@ -43,7 +59,15 @@ query getLibrariesLimit10WithBooksAndLibrarians {
         id,
         name,
         street,
-        books,
-        librarians
+        books {
+            title,
+            release_year,
+            library_id
+        },
+        librarians {
+            name,
+            age,
+            library_id
+        }
     }
 }
